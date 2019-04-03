@@ -244,6 +244,7 @@ namespace WebAppAlexey.BLL.Services
 
         }
 
+
         public ResultViewModel GetMyAddressBook(string email)
         {
             if (email == null)
@@ -292,7 +293,7 @@ namespace WebAppAlexey.BLL.Services
 
             if (currentUser.SubscriptionStatusId == 2)
             {
-                carrierList = Database.Carriers.GetAll();
+                carrierList = Database.Carriers.Find(e=>e.Active==true);
                 foreach (Carrier c in carrierList)
                 {
                     if (c == null) return new ResultViewModel(200, "List is empty", carrierList);
@@ -366,5 +367,20 @@ namespace WebAppAlexey.BLL.Services
             return new ResultViewModel(200, "Your status is changed to \"" + Database.SubscriptionStatuses.GetByName(e => e.Id == currentUser.SubscriptionStatusId).StatusName + "\"");
         }
 
+        public ResultViewModel TestM()
+        {
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Carrier, OutputCustomerCarriersViewModel>()).CreateMapper();
+            IEnumerable<Carrier> carriers = Database.Carriers.GetAll();
+            List<OutputCustomerCarriersViewModel> carrierList = new List<OutputCustomerCarriersViewModel>();
+
+            foreach (Carrier c in carriers)
+            {
+                OutputCustomerCarriersViewModel currentCarrier = mapper.Map<Carrier, OutputCustomerCarriersViewModel>(c);
+                currentCarrier.Status = Database.SubscriptionStatuses.GetByName(e => e.Id == c.SubscriptionStatusId).StatusName;
+                carrierList.Add(currentCarrier);
+            }
+
+            return new ResultViewModel(200, "", carrierList);
+        }
     }
 }

@@ -24,13 +24,24 @@ namespace WebAppAlexey
         }
 
         public IConfiguration Configuration { get; }
+        private readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
-        
         public void ConfigureServices(IServiceCollection services)
         {
             ///
 
-            //services.AddIdentity<User, Role>();///////////////////
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:50133",
+                                        "http://localhost:4200")
+                                        .AllowAnyHeader()
+                                        .AllowAnyMethod(); 
+                });
+            });
+            ///
             services.AddDefaultIdentity<User>().AddRoles<Role>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -63,10 +74,16 @@ namespace WebAppAlexey
             services.RegisterRepositories();
             services.RegisterServices();
 
+
+
+            
+
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            
         }
 
         
@@ -82,6 +99,10 @@ namespace WebAppAlexey
                
                 app.UseHsts();
             }
+
+            ///
+            app.UseCors(MyAllowSpecificOrigins);
+            ///
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

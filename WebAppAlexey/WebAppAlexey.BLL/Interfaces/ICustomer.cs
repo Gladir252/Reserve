@@ -18,6 +18,6 @@ namespace WebAppAlexey.BLL.Interfaces
         ResultViewModel DeleteAddress(string email, AdressViewModel AdressViewModel);
         ResultViewModel GetMyAddressBook(string email);
         ResultViewModel SelectPlan(string email);
-        
+        ResultViewModel TestM();
     }
 }

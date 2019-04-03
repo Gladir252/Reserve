@@ -9,12 +9,12 @@ namespace WebAppAlexey.Controllers
 {
     [Route("api")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class CustomerController : ControllerBase
     {
         private readonly ICustomer _customerService;
 
 
-        public UserController(ICustomer customerService)
+        public CustomerController(ICustomer customerService)
         {
             _customerService = customerService;
         }
@@ -210,11 +210,13 @@ namespace WebAppAlexey.Controllers
             return new BadRequestObjectResult("Unknown error");
         }
 
-        [Authorize(Roles = "Customer")]
         [HttpGet, Route("customer/TestM")]
         public IActionResult MyTestsM()
         {
-            return new OkObjectResult(User.FindFirstValue(ClaimTypes.Email));
+            ResultViewModel resultViewModel = _customerService.TestM();
+            return new OkObjectResult(resultViewModel.DataSet);
+            //return new OkObjectResult(User.FindFirstValue(ClaimTypes.Email));
         }
+
     }
 }
