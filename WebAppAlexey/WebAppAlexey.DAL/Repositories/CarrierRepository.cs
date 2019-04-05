@@ -11,7 +11,7 @@ namespace WebAppAlexey.DAL.Repositories
     class CarrierRepository : IRepository<Carrier>
     {
         readonly WebAppDataBaseContext db;
-        private bool disposed = false;
+        private bool disposed;
 
         public CarrierRepository(WebAppDataBaseContext context)
         {

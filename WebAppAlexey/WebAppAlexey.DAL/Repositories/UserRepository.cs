@@ -11,7 +11,7 @@ namespace WebAppAlexey.DAL.Repositories
     class UserRepository : IRepository<User>
     {
         readonly WebAppDataBaseContext db;
-        private bool disposed = false;
+        private bool disposed;
 
         public UserRepository(WebAppDataBaseContext context)
         {

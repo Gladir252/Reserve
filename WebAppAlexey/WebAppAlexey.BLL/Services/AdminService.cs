@@ -99,8 +99,6 @@ namespace WebAppAlexey.BLL.Services
                 userFunctionalyViewModel.PasswordHash == null ||
                 userFunctionalyViewModel.CarrierName == null) return new ResultViewModel(400, "Invalid request.");
 
-            new CreatePasswordHash(userFunctionalyViewModel.PasswordHash);
-
             Carrier currentCarrier = Database.Carriers.GetByName(e => e.CarrierName == userFunctionalyViewModel.CarrierName);
 
             if (currentCarrier == null) return new ResultViewModel(404, "Carrier not found.");
@@ -203,8 +201,6 @@ namespace WebAppAlexey.BLL.Services
             if (currentUser == null) return new ResultViewModel(404, "User not found.");
 
             UserCarrier currentUserCarrier = Database.UserCarriers.GetByName(e => e.UserId == userFunctionalyViewModel.Id);
-
-            if (currentUser == null) return new ResultViewModel(404, "UserCarrier connection not found.");
 
             if (currentUser.RoleId != 3) return new ResultViewModel(400, "You are trying to delete a user who does not have a " +
                    "\"Carrier\" role. Request rejected.");

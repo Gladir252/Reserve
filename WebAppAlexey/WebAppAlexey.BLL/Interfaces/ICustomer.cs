@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using WebAppAlexey.BLL.ViewModels;
-using WebAppAlexey.DAL.Models;
-using System.Collections.Generic;
+﻿using WebAppAlexey.BLL.ViewModels;
 
 namespace WebAppAlexey.BLL.Interfaces
 {
@@ -9,13 +6,13 @@ namespace WebAppAlexey.BLL.Interfaces
     {
         ResultViewModel Registration(UserFunctionalyViewModel registrationViewModel);
         ResultViewModel Login(UserFunctionalyViewModel t);
-        ResultViewModel AddCarrier(string email, CarrierViewModel CarrierViewModel);
-        ResultViewModel DeleteCarrier(string email, CarrierViewModel CarrierViewModel);
+        ResultViewModel AddCarrier(string email, CarrierViewModel carrierViewModel);
+        ResultViewModel DeleteCarrier(string email, CarrierViewModel carrierViewModel);
         ResultViewModel GetAvaliableCarriers(string email);
         ResultViewModel GetMyCarriers(string email);
-        ResultViewModel AddAddress(string email, AdressViewModel AdressViewModel);
-        ResultViewModel EditAddress(string email, AdressViewModel AdressViewModel);
-        ResultViewModel DeleteAddress(string email, AdressViewModel AdressViewModel);
+        ResultViewModel AddAddress(string email, AdressViewModel adressViewModel);
+        ResultViewModel EditAddress(string email, AdressViewModel adressViewModel);
+        ResultViewModel DeleteAddress(string email, AdressViewModel adressViewModel);
         ResultViewModel GetMyAddressBook(string email);
         ResultViewModel SelectPlan(string email);
         ResultViewModel TestM();

@@ -11,7 +11,7 @@ namespace WebAppAlexey.DAL.Repositories
     class AdressRepository : IRepository<Adress>
     {
         readonly WebAppDataBaseContext db;
-        private bool disposed = false;
+        private bool disposed;
 
         public AdressRepository(WebAppDataBaseContext context)
         {

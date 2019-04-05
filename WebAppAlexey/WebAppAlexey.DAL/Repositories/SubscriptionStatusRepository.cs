@@ -13,7 +13,7 @@ namespace WebAppAlexey.DAL.Repositories
     class SubscriptionStatusRepository : IRepository<SubscriptionStatus>
     {
         readonly WebAppDataBaseContext db;
-        private bool disposed = false;
+        private bool disposed;
 
         public SubscriptionStatusRepository(WebAppDataBaseContext context)
         {

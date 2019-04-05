@@ -2,19 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using WebAppAlexey.DAL.DataBaseContext;
 using WebAppAlexey.DAL.Interfaces;
 using WebAppAlexey.DAL.Models;
-/// <summary>
-/// Coming soon...
-/// </summary>
+
 namespace WebAppAlexey.DAL.Repositories
 {
     class UserCarrierRepository:IRepository<UserCarrier>
     {
         readonly WebAppDataBaseContext db;
-        private bool disposed = false;
+        private bool disposed;
 
         public UserCarrierRepository(WebAppDataBaseContext context)
         {
@@ -26,9 +23,9 @@ namespace WebAppAlexey.DAL.Repositories
             return db.UserCarrier;
         }
 
-        public UserCarrier Get(int Id)
+        public UserCarrier Get(int id)
         {
-            return db.UserCarrier.Find(Id);
+            return db.UserCarrier.Find(id);
         }
         public UserCarrier GetByName(Func<UserCarrier, Boolean> predicate)
         {
@@ -49,9 +46,9 @@ namespace WebAppAlexey.DAL.Repositories
             return db.UserCarrier.Where(predicate).ToList();
         }
 
-        public void Delete(int Id, int? Id2)
+        public void Delete(int id, int? id2)
         {
-            UserCarrier userCarrier = db.UserCarrier.Find(Id, Id2);
+            UserCarrier userCarrier = db.UserCarrier.Find(id, id2);
             if (userCarrier != null)
                 db.UserCarrier.Remove(userCarrier);
         }

@@ -11,8 +11,10 @@ using System.Text;
 using WebAppAlexey.DAL.DataBaseContext;
 using WebAppAlexey.BLL.Services;
 using WebAppAlexey.DAL.Extension;
-using WebAppAlexey.BLL.ViewModels;
 using WebAppAlexey.DAL.Models;
+using Swashbuckle.AspNetCore.Swagger;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace WebAppAlexey
 {
@@ -28,7 +30,22 @@ namespace WebAppAlexey
 
         public void ConfigureServices(IServiceCollection services)
         {
-            ///
+            services.AddSwaggerGen(c => {
+                c.SwaggerDoc("v1", new Info { Title = "You api title", Version = "v1" });
+                c.AddSecurityDefinition("Bearer",
+                    new ApiKeyScheme
+                    {
+                        In = "header",
+                        Description = "Please enter into field the word 'Bearer' following by space and JWT",
+                        Name = "Authorization",
+                        Type = "apiKey"
+                    });
+                c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> {
+                    { "Bearer", Enumerable.Empty<string>() },
+                });
+
+            });
+          
 
             services.AddCors(options =>
             {
@@ -41,7 +58,6 @@ namespace WebAppAlexey
                                         .AllowAnyMethod(); 
                 });
             });
-            ///
             services.AddDefaultIdentity<User>().AddRoles<Role>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -80,7 +96,7 @@ namespace WebAppAlexey
 
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientApp/dist";
+                configuration.RootPath = "MaterialProject/dist";
             });
 
             
@@ -100,9 +116,15 @@ namespace WebAppAlexey
                 app.UseHsts();
             }
 
-            ///
             app.UseCors(MyAllowSpecificOrigins);
-            ///
+            
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json",
+                    "Northwind Service API V1");
+            });
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -120,7 +142,7 @@ namespace WebAppAlexey
             {
                 
 
-                spa.Options.SourcePath = "ClientApp";
+                spa.Options.SourcePath = "MaterialProject";
 
                 if (env.IsDevelopment())
                 {

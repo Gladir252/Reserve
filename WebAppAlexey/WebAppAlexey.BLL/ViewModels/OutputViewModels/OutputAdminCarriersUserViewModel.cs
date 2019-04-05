@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WebAppAlexey.BLL.ViewModels.OutputViewModels
+﻿namespace WebAppAlexey.BLL.ViewModels.OutputViewModels
 {
     class OutputAdminCarriersUserViewModel
     {

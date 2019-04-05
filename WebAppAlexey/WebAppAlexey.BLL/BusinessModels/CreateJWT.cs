@@ -7,18 +7,18 @@ using System.Text;
 
 namespace WebAppAlexey.BLL.BusinessModels
 {
-    class CreateJWT
+    class CreateJwt
     {
-        public CreateJWT(string _email, string _role, string _subscriptionStatus)
+        public CreateJwt(string email, string role, string subscriptionStatus)
         {
-            email = _email;
-            role = _role;
-            subscriptionStatus = _subscriptionStatus;
+            Email = email;
+            Role = role;
+            SubscriptionStatus = subscriptionStatus;
         }
 
-        string role { get; }
-        string subscriptionStatus { get; }
-        string email { get; }
+        string Role { get; }
+        private string SubscriptionStatus { get; }
+        string Email { get; }
 
         public string GetJwt()
         {
@@ -30,9 +30,9 @@ namespace WebAppAlexey.BLL.BusinessModels
                 audience: "http://localhost:50133",
                 claims: new List<Claim>()
                 {
-                    new Claim(ClaimTypes.Email, email),//
-                    new Claim(ClaimTypes.Role, role),//
-                    new Claim(ClaimTypes.Spn, subscriptionStatus)
+                    new Claim(ClaimTypes.Email, Email),//
+                    new Claim(ClaimTypes.Role, Role),//
+                    new Claim(ClaimTypes.Spn, SubscriptionStatus)
                 },
                 expires: DateTime.Now.AddMinutes(99900),
                 signingCredentials: signinCredentials

@@ -16,7 +16,7 @@ namespace WebAppAlexey.DAL.Repositories
         private RoleRepository roleRepository;
         private AdressRepository adressRepository;
 
-        private bool disposed = false;
+        private bool disposed;
 
 
         public EFUnitOfWork()

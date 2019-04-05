@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System.Collections.Generic;
+using System.Linq;
 using WebAppAlexey.BLL.BusinessModels;
 using WebAppAlexey.BLL.Interfaces;
 using WebAppAlexey.BLL.ViewModels;
@@ -63,7 +64,7 @@ namespace WebAppAlexey.BLL.Services
             Database.Users.Create(user);
             Database.Save();
 
-            return new ResultViewModel(200, new CreateJWT(user.Email,
+            return new ResultViewModel(200, new CreateJwt(user.Email,
                     Database.Roles.GetByName(e => e.Id == user.RoleId).RoleName,
                     Database.SubscriptionStatuses.GetByName(e => e.Id == user.SubscriptionStatusId).StatusName).GetJwt());
         }
@@ -82,7 +83,7 @@ namespace WebAppAlexey.BLL.Services
                 return new ResultViewModel(400, "Incorrect login or password ^_-");
             }
 
-            return new ResultViewModel(200, new CreateJWT(currentUser.Email,
+            return new ResultViewModel(200, new CreateJwt(currentUser.Email,
                     Database.Roles.GetByName(e => e.Id == currentUser.RoleId).RoleName,
                     Database.SubscriptionStatuses.GetByName(e => e.Id == currentUser.SubscriptionStatusId).StatusName).GetJwt());
         }
@@ -167,11 +168,11 @@ namespace WebAppAlexey.BLL.Services
 
             User currentUser = Database.Users.GetByName(e => e.Email == email);
 
-            if (currentUser == null) return new ResultViewModel(404, "Bad current user == " + currentUser.Id);
+            if (currentUser == null) return new ResultViewModel(404, "Bad current user == " + email);
 
             Adress currentAddress = Database.Adresses.GetByName(e => e.UserId == currentUser.Id && e.StreetLine1 == addDeleteAdressViewModel.StreetLine1);
 
-            if (currentUser != null && currentAddress == null)
+            if (currentAddress == null)
             {
                 Adress address = new Adress
                 {
@@ -199,11 +200,11 @@ namespace WebAppAlexey.BLL.Services
 
             User currentUser = Database.Users.GetByName(e => e.Email == email);
 
-            if (currentUser == null) return new ResultViewModel(404, "Bad current user == " + currentUser.Id);
+            if (currentUser == null) return new ResultViewModel(404, "Bad current user == " + email);
 
             Adress currentAddress = Database.Adresses.GetByName(e => e.UserId == currentUser.Id && e.Id == addDeleteAdressViewModel.AdressId);
 
-            if (currentUser != null && currentAddress != null)
+            if (currentAddress != null)
             {
                 currentAddress.StreetLine1 = addDeleteAdressViewModel.StreetLine1;
                 currentAddress.StreetLine2 = addDeleteAdressViewModel.StreetLine2;
@@ -228,11 +229,11 @@ namespace WebAppAlexey.BLL.Services
 
             User currentUser = Database.Users.GetByName(e => e.Email == email);
 
-            if (currentUser == null) return new ResultViewModel(404, "Bad current user == " + currentUser.Id);
+            if (currentUser == null) return new ResultViewModel(404, "Bad current user == " + email);
 
             Adress currentAddress = Database.Adresses.GetByName(e => e.UserId == currentUser.Id && e.Id == addDeleteAdressViewModel.AdressId);
 
-            if (currentUser != null && currentAddress != null)
+            if (currentAddress != null)
             {
                 Database.Adresses.Delete(currentAddress.Id, null);
                 Database.Save();
@@ -258,7 +259,6 @@ namespace WebAppAlexey.BLL.Services
 
             IEnumerable<Adress> addressList = Database.Adresses.Find(e => e.UserId == currentUser.Id);
 
-            if (addressList == null) return new ResultViewModel(404, "List is empty", addressList);//202!!!!!!!!!!!!!
 
             var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Adress, OutputAddressBookViewModel>()).CreateMapper();
             List<OutputAddressBookViewModel> currentList = new List<OutputAddressBookViewModel>();
@@ -293,7 +293,7 @@ namespace WebAppAlexey.BLL.Services
 
             if (currentUser.SubscriptionStatusId == 2)
             {
-                carrierList = Database.Carriers.Find(e=>e.Active==true);
+                carrierList = Database.Carriers.Find(e=>e.Active==true).ToList();////////
                 foreach (Carrier c in carrierList)
                 {
                     if (c == null) return new ResultViewModel(200, "List is empty", carrierList);
@@ -305,7 +305,7 @@ namespace WebAppAlexey.BLL.Services
             }
             else
             {
-                carrierList = Database.Carriers.Find(e => e.Active == true && e.SubscriptionStatusId == currentUser.SubscriptionStatusId);
+                carrierList = Database.Carriers.Find(e => e.Active == true && e.SubscriptionStatusId == currentUser.SubscriptionStatusId).ToList();
                 foreach (Carrier c in carrierList)
                 {
                     if (c == null) return new ResultViewModel(200, "List is empty", carrierList);
@@ -329,7 +329,7 @@ namespace WebAppAlexey.BLL.Services
 
             if (currentUser == null) return new ResultViewModel(404, "User not found ^_^");
 
-            IEnumerable<UserCarrier> userCarrierList = Database.UserCarriers.Find(e => e.UserId == currentUser.Id);
+            IEnumerable<UserCarrier> userCarrierList = Database.UserCarriers.Find(e => e.UserId == currentUser.Id).ToList();
             var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Carrier, OutputCustomerCarriersViewModel>()).CreateMapper();
             List<OutputCustomerCarriersViewModel> myCarrierListOne = new List<OutputCustomerCarriersViewModel>();
 
